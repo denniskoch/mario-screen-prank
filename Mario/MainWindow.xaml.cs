@@ -13,10 +13,11 @@ namespace Mario
     {
         private const int FPS = 20;
 
-        // Mario
-        private const int MARIO_VELOCITY = 3;
-        private const int MARIO_WALK_FRAMES = 6;
+        // Mario Sprite Constants
+        private const int MARIO_VELOCITY = 3; // Defines Mario's X movement per frame
+        private const int MARIO_WALK_FRAMES = 6; // Number of frame in Mario's walk animation
         BitmapImage[] MarioWalkFrames = new BitmapImage[MARIO_WALK_FRAMES];
+
         private int MarioWalkCurrentFrame = 0;
 
         private int ScreenWidth = 1024;
@@ -62,6 +63,9 @@ namespace Mario
 
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         private void tick(object sender, EventArgs e)
         {
 
