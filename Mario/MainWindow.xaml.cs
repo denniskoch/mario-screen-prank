@@ -83,10 +83,10 @@ namespace Mario
             // Mario Initially Off Screen
             Canvas.SetLeft(this.Mario, (-1 * Mario.Width));
 
-            // Mario Initially Off Screen
+            // Luigi Initially Off Screen, behind Mario
             Canvas.SetLeft(this.Luigi, (-2 * Luigi.Width));
 
-            // Mario Initially Off Screen
+            // Yoshi Initially Off Screen, behind Luigi
             Canvas.SetLeft(this.Yoshi, (-3 * Yoshi.Width));
 
             // Create Timer
