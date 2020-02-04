@@ -20,6 +20,18 @@ namespace Mario
 
         private int MarioWalkCurrentFrame = 0;
 
+        private const int LUIGI_VELOCITY = 4; // Defines Mario's X movement per frame
+        private const int LUIGI_WALK_FRAMES = 6; // Number of frame in Mario's walk animation
+        BitmapImage[] LuigiWalkFrames = new BitmapImage[LUIGI_WALK_FRAMES];
+
+        private int LuigiWalkCurrentFrame = 0;
+
+        private const int YOSHI_VELOCITY = 5; // Defines Mario's X movement per frame
+        private const int YOSHI_WALK_FRAMES = 6; // Number of frame in Mario's walk animation
+        BitmapImage[] YoshiWalkFrames = new BitmapImage[YOSHI_WALK_FRAMES];
+
+        private int YoshiWalkCurrentFrame = 0;
+
         private int ScreenWidth = 1024;
         private int ScreenHeight = 768;
 
@@ -45,15 +57,37 @@ namespace Mario
             this.millisecondsBetweenFrames = 1000 / FPS;
 
             // Load Mario Walk Frames
-            MarioWalkFrames[0] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/2.png"));
-            MarioWalkFrames[1] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/2.png"));
-            MarioWalkFrames[2] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"));
-            MarioWalkFrames[3] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"));
-            MarioWalkFrames[4] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/1.png"));
-            MarioWalkFrames[5] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/1.png"));
-            
+            MarioWalkFrames[0] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"));
+            MarioWalkFrames[1] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"));
+            MarioWalkFrames[2] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/1.png"));
+            MarioWalkFrames[3] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/1.png"));
+            MarioWalkFrames[4] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/2.png"));
+            MarioWalkFrames[5] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/walk/2.png"));
+
+            // Load Mario Walk Frames
+            LuigiWalkFrames[0] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/0.png"));
+            LuigiWalkFrames[1] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/0.png"));
+            LuigiWalkFrames[2] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/1.png"));
+            LuigiWalkFrames[3] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/1.png"));
+            LuigiWalkFrames[4] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/2.png"));
+            LuigiWalkFrames[5] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/2.png"));
+
+            // Load Mario Walk Frames
+            YoshiWalkFrames[0] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/0.png"));
+            YoshiWalkFrames[1] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/0.png"));
+            YoshiWalkFrames[2] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/1.png"));
+            YoshiWalkFrames[3] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/1.png"));
+            YoshiWalkFrames[4] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/2.png"));
+            YoshiWalkFrames[5] = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/2.png"));
+
             // Mario Initially Off Screen
             Canvas.SetLeft(this.Mario, (-1 * Mario.Width));
+
+            // Mario Initially Off Screen
+            Canvas.SetLeft(this.Luigi, (-2 * Luigi.Width));
+
+            // Mario Initially Off Screen
+            Canvas.SetLeft(this.Yoshi, (-3 * Yoshi.Width));
 
             // Create Timer
             var timer = new DispatcherTimer();
@@ -74,6 +108,7 @@ namespace Mario
 
             if (elapsedTime >= millisecondsBetweenFrames)
             {
+                // Mario
                 this.MarioWalkCurrentFrame = (this.MarioWalkCurrentFrame + 1 + MARIO_WALK_FRAMES) % MARIO_WALK_FRAMES;
 
                 MarioSprite.ImageSource = this.MarioWalkFrames[this.MarioWalkCurrentFrame];
@@ -91,6 +126,43 @@ namespace Mario
 
                 Canvas.SetLeft(this.Mario, MarioPositionX);
 
+                // Luigi
+                this.LuigiWalkCurrentFrame = (this.LuigiWalkCurrentFrame + 1 + LUIGI_WALK_FRAMES) % LUIGI_WALK_FRAMES;
+
+                LuigiSprite.ImageSource = this.LuigiWalkFrames[this.LuigiWalkCurrentFrame];
+
+                double LuigiPositionX = Canvas.GetLeft(Luigi);
+
+                if (LuigiPositionX < (ScreenWidth + Luigi.Width))
+                {
+                    LuigiPositionX += LUIGI_VELOCITY;
+                }
+                else
+                {
+                    LuigiPositionX = (-1 * Mario.Width);
+                }
+
+                Canvas.SetLeft(this.Luigi, LuigiPositionX);
+
+                // Yoshi
+                this.YoshiWalkCurrentFrame = (this.YoshiWalkCurrentFrame + 1 + YOSHI_WALK_FRAMES) % YOSHI_WALK_FRAMES;
+
+                YoshiSprite.ImageSource = this.YoshiWalkFrames[this.YoshiWalkCurrentFrame];
+
+                double YoshiPositionX = Canvas.GetLeft(Yoshi);
+
+                if (YoshiPositionX < (ScreenWidth + Yoshi.Width))
+                {
+                    YoshiPositionX += YOSHI_VELOCITY;
+                }
+                else
+                {
+                    YoshiPositionX = (-1 * Mario.Width);
+                }
+
+                Canvas.SetLeft(this.Yoshi, YoshiPositionX);
+
+                // Time of Last Update
                 this.last = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
 

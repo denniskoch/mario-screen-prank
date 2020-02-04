@@ -119,5 +119,25 @@
     <Resource Include="Resources\sprites\mario\jump\0.png" />
     <Resource Include="Resources\sprites\mario\jump\1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sprites\luigi\walk\1.png" />
+    <Resource Include="Resources\sprites\luigi\walk\0.png" />
+    <Resource Include="Resources\sprites\luigi\walk\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sprites\luigi\jump\0.png" />
+    <Resource Include="Resources\sprites\luigi\jump\1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sprites\luigi\skid\0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sprites\luigi\victory\0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sprites\yoshi\walk\2.png" />
+    <Resource Include="Resources\sprites\yoshi\walk\0.png" />
+    <Resource Include="Resources\sprites\yoshi\walk\1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

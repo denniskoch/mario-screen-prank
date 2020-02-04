@@ -21,7 +21,24 @@
                                 AlignmentY="Top">
                     </ImageBrush>
                 </Rectangle.Fill>
-                
+            </Rectangle>
+            <Rectangle x:Name="Luigi" Width="43" Height="43"  Canvas.Left="43">
+                <Rectangle.Fill>
+                    <ImageBrush x:Name="LuigiSprite" ImageSource="pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/0.png"
+                                Stretch="None"
+                                AlignmentX="Left"
+                                AlignmentY="Top">
+                    </ImageBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="Yoshi" Width="43" Height="43"  Canvas.Left="86">
+                <Rectangle.Fill>
+                    <ImageBrush x:Name="YoshiSprite" ImageSource="pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/0.png"
+                                Stretch="None"
+                                AlignmentX="Left"
+                                AlignmentY="Top">
+                    </ImageBrush>
+                </Rectangle.Fill>
             </Rectangle>
         </Canvas>
     </Grid>
