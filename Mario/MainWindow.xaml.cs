@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -39,10 +40,14 @@ namespace Mario
 
         private long millisecondsBetweenFrames;
 
+        private NotifyIcon notifyIcon;
+
+        private System.Windows.Forms.ContextMenu contextMenu;
+
         public MainWindow()
         {
             InitializeComponent();
-
+            
             ScreenWidth =  (int)SystemParameters.WorkArea.Width;
             ScreenHeight = (int)SystemParameters.WorkArea.Height;
             
@@ -95,6 +100,24 @@ namespace Mario
             timer.Start();
             timer.Tick += tick;
 
+            // Create NotifyIcon in SysTray
+            notifyIcon = new NotifyIcon();
+
+            System.IO.Stream iconStream = System.Windows.Application.GetResourceStream(new Uri(@"pack://application:,,,/Mario;component/Resources/mushroom.ico")).Stream;
+
+            notifyIcon.Icon = new System.Drawing.Icon(iconStream);
+            iconStream.Dispose();
+
+            contextMenu = new System.Windows.Forms.ContextMenu();
+            contextMenu.MenuItems.Add("Exit", contextMenu_Click);
+            
+            notifyIcon.ContextMenu = contextMenu;
+            notifyIcon.Visible = true;
+        }
+
+        private void contextMenu_Click(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
 
         /// <summary>
