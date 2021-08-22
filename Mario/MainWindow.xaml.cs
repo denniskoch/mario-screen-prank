@@ -15,41 +15,32 @@ namespace Mario
     {
         private const int FPS = 20;
 
-        // Mario Sprite Constants
+        // Mario Sprite
         private const int MarioVelocity = 3; // Defines Mario's X movement per frame
-        private const int MarioNumWalkFrames = 6; // Number of frame in Mario's walk animation
-        BitmapImage[] _marioWalkFrames = new BitmapImage[MarioNumWalkFrames];
-        BitmapImage _marioStandingFrame;
-
-        private int _marioWalkCurrentFrame = 0;
+        private AnimatedSprite _marioWalkingAnimation;
+        private AnimatedSprite _marioStandingAnimation;
         private bool _marioIsWalking = true;
 
-        private const int LuigiVelocity = 4; // Defines Mario's X movement per frame
-        private const int LuigiNumWalkFrames = 6; // Number of frame in Mario's walk animation
-        BitmapImage[] _luigiWalkFrames = new BitmapImage[LuigiNumWalkFrames];
-        BitmapImage _luigiStandingFrame;
-
-        // Luigi's animation will start on 2nd frame just so he's slightly out of step with mario... to keep things interesting
-        private int _luigiWalkCurrentFrame = 1;
+        // Luigi Sprite
+        private const int LuigiVelocity = 4; // Defines Luigi's X movement per frame
+        private AnimatedSprite _luigiWalkingAnimation;
+        private AnimatedSprite _luigiStandingAnimation;
         private bool _luigiIsWalking = true;
 
-        private const int YoshiVelocity = 5; // Defines Mario's X movement per frame
-        private const int YoshiNumWalkFrames = 6; // Number of frame in Mario's walk animation
-        BitmapImage[] _yoshiWalkFrames = new BitmapImage[YoshiNumWalkFrames];
-        BitmapImage _yoshiStandingFrame;
-
-        private int _yoshiWalkCurrentFrame = 0;
+        // Yoshi Sprite
+        private const int YoshiVelocity = 5; // Defines Yoshi's X movement per frame
+        private AnimatedSprite _yoshiWalkingAnimation;
+        private AnimatedSprite _yoshiStandingAnimation;
         private bool _yoshiIsWalking = true;
 
+        // Shell Sprite
         private const int ShellVelocity = 8;
-        private const int ShellNumSpinningFrames = 8;
-        BitmapImage[] _shellSpinningFrames = new BitmapImage[ShellNumSpinningFrames];
-
-        private int _shellSpinningCurrentFrame = 0;
+        private AnimatedSprite _shellSpinningAnimation;
         private bool _shellIsActive = false;
 
-        private int screenWidth = 1024;
-        private int screenHeight = 768;
+
+        private int _screenWidth = 1024;
+        private int _screenHeight = 768;
 
         private long last = 0;
 
@@ -72,31 +63,31 @@ namespace Mario
             random = new Random(Guid.NewGuid().GetHashCode());
 
             // Window Dimensions
-            screenWidth =  (int)SystemParameters.WorkArea.Width;
-            screenHeight = (int)SystemParameters.WorkArea.Height;
+            _screenWidth =  (int)SystemParameters.WorkArea.Width;
+            _screenHeight = (int)SystemParameters.WorkArea.Height;
             this.Height = 43;
-            this.Width = screenWidth;
+            this.Width = _screenWidth;
 
             // Window Position
             this.Left = 0;
-            this.Top = screenHeight - this.Height;
+            this.Top = _screenHeight - this.Height;
 
             this.millisecondsBetweenFrames = 1000 / FPS;
 
             // Load Mario Frames
-            _marioWalkFrames = loadFrames("mario", "walk", MarioNumWalkFrames);
-            _marioStandingFrame = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/mario/victory/0.png"));
+            _marioWalkingAnimation = new AnimatedSprite("mario", "walk", 6);
+            _marioStandingAnimation = new AnimatedSprite("mario", "victory", 1);
 
             // Load Luigi Frames
-            _luigiWalkFrames = loadFrames("luigi", "walk", LuigiNumWalkFrames);
-            _luigiStandingFrame = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/luigi/victory/0.png"));
+            _luigiWalkingAnimation = new AnimatedSprite("luigi", "walk", 6);
+            _luigiStandingAnimation = new AnimatedSprite("luigi", "victory", 1);
 
             // Load Yoshi Frames
-            _yoshiWalkFrames = loadFrames("yoshi", "walk", YoshiNumWalkFrames);
-            _yoshiStandingFrame = new BitmapImage(new Uri(@"pack://application:,,,/Mario;component/Resources/sprites/yoshi/stand/0.png"));
+            _yoshiWalkingAnimation = new AnimatedSprite("yoshi", "walk", 6);
+            _yoshiStandingAnimation = new AnimatedSprite("yoshi", "stand", 1);
 
             // Load Shell Frames
-            _shellSpinningFrames = loadFrames("shell", "spinning", ShellNumSpinningFrames);
+            _shellSpinningAnimation = new AnimatedSprite("shell", "spinning", 8);
 
             // Set the initial start positions of our friends, spaced out so that they're not on top of each other
             Canvas.SetLeft(this.Mario, (-1 * Mario.Width));
@@ -117,25 +108,11 @@ namespace Mario
             iconStream.Dispose();
             
             contextMenu = new System.Windows.Forms.ContextMenu();
-            contextMenu.MenuItems.Add("Shell", contextMenuShell_Click);
+            contextMenu.MenuItems.Add("Launch Shell", contextMenuShell_Click);
             contextMenu.MenuItems.Add("Exit", contextMenuExit_Click);
             
             notifyIcon.ContextMenu = contextMenu;
             notifyIcon.Visible = true;
-        }
-
-        private BitmapImage[] loadFrames(string name, string action, int numberOfFrames)
-        {
-            BitmapImage[] frames = new BitmapImage[numberOfFrames];
-            String resourcePath;
-
-            for (int i = 0; i < numberOfFrames; i++)
-            {
-                resourcePath = String.Format("pack://application:,,,/Mario;component/Resources/sprites/{0}/{1}/{2}.png", name, action, i);
-                frames[i] = new BitmapImage(new Uri(resourcePath));
-            }
-
-            return frames;
         }
 
         /// <summary>
@@ -168,11 +145,10 @@ namespace Mario
                 // Update Mario
                 if (_marioIsWalking)
                 {
-                    this._marioWalkCurrentFrame = (this._marioWalkCurrentFrame + 1 + MarioNumWalkFrames) % MarioNumWalkFrames;
-                    MarioSprite.ImageSource = this._marioWalkFrames[this._marioWalkCurrentFrame];
+                    MarioSprite.ImageSource = _marioWalkingAnimation.Frame();
                     double MarioPositionX = Canvas.GetLeft(Mario);
 
-                    if (MarioPositionX < (screenWidth + Mario.Width))
+                    if (MarioPositionX < (_screenWidth + Mario.Width))
                     {
                         MarioPositionX += MarioVelocity;
                     }
@@ -185,17 +161,16 @@ namespace Mario
                 }
                 else
                 {
-                    MarioSprite.ImageSource = _marioStandingFrame;
+                    MarioSprite.ImageSource = _marioStandingAnimation.Frame();
                 }
 
                 // Update Luigi
                 if (_luigiIsWalking)
                 {
-                    this._luigiWalkCurrentFrame = (this._luigiWalkCurrentFrame + 1 + LuigiNumWalkFrames) % LuigiNumWalkFrames;
-                    LuigiSprite.ImageSource = this._luigiWalkFrames[this._luigiWalkCurrentFrame];
+                    LuigiSprite.ImageSource = _luigiWalkingAnimation.Frame();
                     double LuigiPositionX = Canvas.GetLeft(Luigi);
 
-                    if (LuigiPositionX < (screenWidth + Luigi.Width))
+                    if (LuigiPositionX < (_screenWidth + Luigi.Width))
                     {
                         LuigiPositionX += LuigiVelocity;
                     }
@@ -208,17 +183,16 @@ namespace Mario
                 }
                 else
                 {
-                    LuigiSprite.ImageSource = _luigiStandingFrame;
+                    LuigiSprite.ImageSource = _luigiStandingAnimation.Frame();
                 }
 
                 // Update Yoshi
                 if (_yoshiIsWalking)
                 {
-                    this._yoshiWalkCurrentFrame = (this._yoshiWalkCurrentFrame + 1 + YoshiNumWalkFrames) % YoshiNumWalkFrames;
-                    YoshiSprite.ImageSource = this._yoshiWalkFrames[this._yoshiWalkCurrentFrame];
+                    YoshiSprite.ImageSource = _yoshiWalkingAnimation.Frame();
                     double YoshiPositionX = Canvas.GetLeft(Yoshi);
 
-                    if (YoshiPositionX < (screenWidth + Yoshi.Width))
+                    if (YoshiPositionX < (_screenWidth + Yoshi.Width))
                     {
                         YoshiPositionX += YoshiVelocity;
                     }
@@ -231,17 +205,16 @@ namespace Mario
                 }
                 else
                 {
-                    YoshiSprite.ImageSource = _yoshiStandingFrame;
+                    YoshiSprite.ImageSource = _yoshiStandingAnimation.Frame();
                 }
 
                 if (_shellIsActive)
                 {
-                    this._shellSpinningCurrentFrame = (this._shellSpinningCurrentFrame + 1 + ShellNumSpinningFrames) % ShellNumSpinningFrames;
-                    ShellSprite.ImageSource = this._shellSpinningFrames[this._shellSpinningCurrentFrame];
+                    ShellSprite.ImageSource = _shellSpinningAnimation.Frame();
 
                     double ShellPositionX = Canvas.GetLeft(Shell);
 
-                    if (ShellPositionX < (screenWidth + Shell.Width))
+                    if (ShellPositionX < (_screenWidth + Shell.Width))
                     {
                         ShellPositionX += ShellVelocity;
                     }
