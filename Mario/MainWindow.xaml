@@ -10,33 +10,71 @@
         Width="200"
         Left="0"
         Top="0"
-        AllowsTransparency="True" WindowStyle="None" Background="Transparent" ShowInTaskbar="False" Topmost="True">
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True">
     <Grid>
         <Canvas>
-            <Rectangle x:Name="Mario" Width="43" Height="43"  Canvas.Left="0">
+            <Rectangle x:Name="Mario"
+                       Width="43"
+                       Height="43"
+                       Canvas.Left="0"
+                       Panel.ZIndex="3"
+                       MouseLeftButtonDown="mario_MouseLeftButtonDown">
                 <Rectangle.Fill>
-                    <ImageBrush x:Name="MarioSprite" ImageSource="pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"
+                    <ImageBrush x:Name="MarioSprite"
+                                ImageSource="pack://application:,,,/Mario;component/Resources/sprites/mario/walk/0.png"
                                 Stretch="None"
                                 AlignmentX="Left"
                                 AlignmentY="Top">
                     </ImageBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Rectangle x:Name="Luigi" Width="43" Height="43"  Canvas.Left="43">
+            <Rectangle x:Name="Luigi"
+                       Width="43"
+                       Height="43"
+                       Canvas.Left="43"
+                       Panel.ZIndex="2"
+                       MouseLeftButtonDown="luigi_MouseLeftButtonDown">
                 <Rectangle.Fill>
-                    <ImageBrush x:Name="LuigiSprite" ImageSource="pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/0.png"
+                    <ImageBrush x:Name="LuigiSprite"
+                                ImageSource="pack://application:,,,/Mario;component/Resources/sprites/luigi/walk/0.png"
                                 Stretch="None"
                                 AlignmentX="Left"
                                 AlignmentY="Top">
                     </ImageBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Rectangle x:Name="Yoshi" Width="43" Height="43"  Canvas.Left="86">
+            <Rectangle x:Name="Yoshi"
+                       Width="43"
+                       Height="43"
+                       Canvas.Left="86"
+                       Panel.ZIndex="1"
+                       MouseLeftButtonDown="yoshi_MouseLeftButtonDown">
                 <Rectangle.Fill>
-                    <ImageBrush x:Name="YoshiSprite" ImageSource="pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/0.png"
+                    <ImageBrush x:Name="YoshiSprite"
+                                ImageSource="pack://application:,,,/Mario;component/Resources/sprites/yoshi/walk/0.png"
                                 Stretch="None"
                                 AlignmentX="Left"
                                 AlignmentY="Top">
+                    </ImageBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="Shell"
+                       Width="23"
+                       Height="23"
+                       Canvas.Bottom="0"
+                       Canvas.Left="129"
+                       Panel.ZIndex="1"
+                       MouseLeftButtonDown="shell_MouseLeftButtonDown">
+                <Rectangle.Fill>
+                    <ImageBrush x:Name="ShellSprite"
+                                ImageSource="pack://application:,,,/Mario;component/Resources/sprites/shell/spinning/0.png"
+                                Stretch="None"
+                                AlignmentX="Left"
+                                AlignmentY="Bottom">
                     </ImageBrush>
                 </Rectangle.Fill>
             </Rectangle>
